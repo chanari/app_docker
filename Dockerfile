@@ -7,5 +7,6 @@ RUN gem install bundler:2.0.1
 ADD Gemfile $APP_HOME
 ADD Gemfile.lock $APP_HOME
 RUN bundle install
+RUN rm -rf /application/tmp/*
 ADD . $APP_HOME
 ENTRYPOINT ./entrypoint.sh
