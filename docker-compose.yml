@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - .:/application
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+  web:
+    build: .
+    env_file:
+      - .env
+    environment:
+      - RACK_ENV=production
+      - RAILS_ENV=production
+      - RAILS_SERVE_STATIC_FILES=true
+    volumes:
+      - .:/application
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+volumes:
+  db_data:
